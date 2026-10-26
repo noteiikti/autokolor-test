@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="pl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoKolor - Kompleksowy Serwis Samochodowy</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        akRed: '#D32F2F', // Główny czerwony akcent
+                        akRedHover: '#B71C1C',
+                        akDark: '#121212', // Główne tło
+                        akCard: '#1E1E1E', // Tło kart i parzystych sekcji
+                        akText: '#E0E0E0'  // Jasnoszary tekst
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        
+        /* Idealne dopasowanie kolorów do ustawień Tailwind, zapobiegające migotaniu tła */
+        body, .bg-brandDark { background-color: #1a1a1a !important; }
+        .bg-brandGray { background-color: #2d2d2d !important; }
+        
+        .hero-bg {
+            background: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.95)), url('https://images.unsplash.com/photo-1613214149922-f1809c99b414?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+        }
+        .fade-in { animation: fadeIn 0.5s ease-in-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-akDark text-akText font-sans antialiased overflow-x-hidden">
+
+    <!-- NAWIGACJA (Sticky) -->
+    <header class="fixed w-full top-0 z-50 bg-akDark/95 backdrop-blur-md border-b border-gray-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="text-2xl font-extrabold tracking-wider text-white flex items-center gap-2 uppercase">
+                        <span class="text-akRed">AUTO</span>KOLOR
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <nav class="hidden lg:flex space-x-8 text-sm font-semibold uppercase tracking-wide">
+                    <a href="#sklep" class="text-gray-300 hover:text-white transition duration-300">Sklep Lakierniczy</a>
+                    <a href="#naprawy" class="text-gray-300 hover:text-white transition duration-300">Naprawy Bezgotówkowe</a>
+                    <a href="#warsztat" class="text-gray-300 hover:text-white transition duration-300">Warsztat</a>
+                    <a href="#o-nas" class="text-gray-300 hover:text-white transition duration-300">O nas</a>
+                    <a href="#kontakt" class="text-gray-300 hover:text-white transition duration-300">Kontakt</a>
+                </nav>
+
+                <!-- Kontakt Szybki Desktop -->
+                <div class="hidden lg:flex items-center">
+                    <a href="tel:324570375" class="flex items-center gap-2 text-white bg-akCard border border-gray-700 px-5 py-2.5 rounded-lg hover:bg-gray-800 hover:border-akRed transition group">
+                        <i class="fa-solid fa-phone text-akRed group-hover:animate-pulse"></i>
+                        <span class="font-bold tracking-wider">32 457 03 75</span>
+                    </a>
+                </div>
+
+                <!-- Hamburger Menu Button (Mobile) -->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Ukryte domyślnie) -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-akCard border-b border-gray-800 absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-2 uppercase font-semibold text-sm">
+                <a href="#sklep" class="block px-3 py-3 rounded-md text-gray-300 hover:text-white hover:bg-gray-800">Sklep</a>
+                <a href="#naprawy" class="block px-3 py-3 rounded-md text-gray-300 hover:text-white hover:bg-gray-800">Naprawy bezgotówkowe</a>
+                <a href="#warsztat" class="block px-3 py-3 rounded-md text-gray-300 hover:text-white hover:bg-gray-800">Warsztat</a>
+                <a href="#o-nas" class="block px-3 py-3 rounded-md text-gray-300 hover:text-white hover:bg-gray-800">O nas</a>
+                <a href="#kontakt" class="block px-3 py-3 rounded-md text-gray-300 hover:text-white hover:bg-gray-800">Kontakt</a>
+                <a href="tel:324570375" class="block px-3 py-3 mt-4 text-center rounded-md font-bold bg-akRed text-white"><i class="fa-solid fa-phone mr-2"></i>32 457 03 75</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- SEKCJA HERO -->
+    <section class="relative pt-32 pb-16 lg:pt-48 lg:pb-32 min-h-[90vh] flex items-center overflow-hidden border-b-4 border-akRed">
+        <!-- Tło z overlayem -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1613214149922-f1809c99b414?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Warsztat tło" class="w-full h-full object-cover opacity-20">
+            <div class="absolute inset-0 bg-gradient-to-t from-akDark via-akDark/80 to-transparent"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-5xl mx-auto text-center">
+                <h1 class="mb-6 text-4xl font-extrabold text-white sm:text-5xl md:text-6xl uppercase tracking-tight">
+                    <span class="text-akRed block mb-2 text-2xl sm:text-3xl tracking-widest">Auto Kolor</span>
+                    Kompleksowy Zakład Samochodowy
+                </h1>
+                
+               <!-- Zoptymalizowana lista usług (wyśrodkowana) -->
+            <div class="mb-12 text-sm md:text-base text-gray-200 flex justify-center w-full">
+                <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 text-left font-medium w-fit">
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle mr-3 text-base flex-shrink-0 mt-0"></i>
+                        <span class="leading-snug">Sklep z profesjonalnymi artykułami</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle mr-3 text-base flex-shrink-0 mt-0"></i> 
+                        <span>Rozliczenia bezgotówkowe z ubezpieczalniami</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle mr-3 text-base flex-shrink-0 mt-0"></i> 
+                        <span>Samochody zastępcze dla klientów</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle mr-3 text-base flex-shrink-0 mt-0"></i> 
+                        <span>Kompleksowe naprawy blacharsko-lakiernicze</span>
+                    </li>
+                </ul>
+            </div>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button id="hero-pomoc-btn" class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white uppercase tracking-wider transition border-2 border-akRed bg-akDark/50 rounded-xl hover:bg-akRed/20 shadow-lg shadow-akRed/20 gap-2">
+                        <i class="fa-solid fa-truck-pickup"></i> Pomoc drogowa 24/7
+                    </button>
+                    <a href="#kontakt" class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white uppercase tracking-wider transition bg-akRed rounded-xl hover:bg-akRedHover shadow-lg shadow-akRed/30">
+                        Skontaktuj się z nami
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKLEP -->
+    <section id="sklep" class="py-20 bg-akDark border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white uppercase tracking-wider mb-4">Sklep Lakierniczy</h2>
+                <div class="h-1 w-20 bg-akRed mx-auto rounded"></div>
+            </div>
+            
+            <p class="max-w-3xl mx-auto text-center text-gray-400 mb-16 text-lg leading-relaxed">
+                Lakierniami zajmujemy się od 1999 roku. W naszej ofercie znajduje się pełna gama lakierów. 
+                Zajmujemy się także sprzedażą szerokiego asortymentu materiałów lakierniczych. Oferujemy komputerowy dobór kolorów.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Karta Sklep 1 -->
+                <div class="p-8 rounded-2xl bg-akCard border border-gray-800 hover:border-akRed/50 transition duration-300 group">
+                    <div class="w-16 h-16 bg-gray-800 rounded-xl flex items-center justify-center mb-6 group-hover:bg-akRed/20 transition">
+                        <i class="fa-solid fa-spray-can text-3xl text-akRed"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Akcesoria lakiernicze</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        W naszym asortymencie znaleźć można m.in.: pasty oraz gąbki polerskie, papiery ścierne, mleczka nabłyszczające, różnego rodzaju konserwacje, ściereczki antystatyczne, papiery do oklejania, folie, taśmy.
+                    </p>
+                </div>
+                <!-- Karta Sklep 2 -->
+                <div class="p-8 rounded-2xl bg-akCard border border-gray-800 hover:border-akRed/50 transition duration-300 group">
+                    <div class="w-16 h-16 bg-gray-800 rounded-xl flex items-center justify-center mb-6 group-hover:bg-akRed/20 transition">
+                        <i class="fa-solid fa-laptop-code text-3xl text-akRed"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Komputerowe mieszanie</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Oferujemy precyzyjne komputerowe mieszanie i dorabianie kolorów farb i lakierów samochodowych. Gwarantujemy idealne dopasowanie odcienia.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NAPRAWY BEZGOTÓWKOWE -->
+    <section id="naprawy" class="py-20 bg-akCard border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white uppercase tracking-wider mb-4">Naprawy Bezgotówkowe</h2>
+                <div class="h-1 w-20 bg-akRed mx-auto rounded"></div>
+            </div>
+
+            <p class="max-w-4xl mx-auto text-center text-gray-400 mb-16 text-lg leading-relaxed">
+                Gwarantujemy fachową i miłą obsługę oraz rzetelność i terminowość. Chcąc sprostać wymaganiom naszych Klientów pozyskaliśmy wykształconą kadrę pracowniczą oraz specjalistyczny sprzęt. Oferujemy kompleksową realizację zleceń naprawczych.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Karta 1 -->
+                <div class="p-8 rounded-2xl bg-akDark border border-gray-800 hover:border-akRed/50 transition duration-300 group">
+                    <div class="w-16 h-16 bg-gray-800 rounded-xl flex items-center justify-center mb-6 group-hover:bg-akRed/20 transition">
+                        <i class="fa-solid fa-car-side text-3xl text-akRed"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Samochód zastępczy</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Krótko i długoterminowy wynajem. Posiadamy ok. 20 samochodów wyposażonych w ABS, klimatyzację i poduszki powietrzne, m.in.:<br>
+                        <span class="text-gray-500 text-xs italic mt-2 block">Renault Clio, Opel Corsa, Dacia Logan, Skoda Fabia, Fiat Panda, Peugeot Partner.</span>
+                    </p>
+                </div>
+                <!-- Karta 2 (Wyróżniona) -->
+                <div class="p-8 rounded-2xl bg-akDark border border-gray-800 hover:border-akRed/50 transition duration-300 group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-akRed text-white px-4 py-1.5 rounded-bl-xl font-bold text-sm tracking-wider shadow-lg">24/7</div>
+                    <div class="w-16 h-16 bg-gray-800 rounded-xl flex items-center justify-center mb-6 group-hover:bg-akRed/20 transition">
+                        <i class="fa-solid fa-truck-pickup text-3xl text-akRed"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Pomoc drogowa</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Niezbędne umiejętności oraz fachowy, niezawodny sprzęt. Na chwilę obecną dysponujemy trzeba lawetami.<br>
+                        <span class="text-white font-semibold mt-2 block">Jesteśmy do dyspozycji 24h na dobę, 7 dni w tygodniu.</span>
+                    </p>
+                </div>
+                <!-- Karta 3 -->
+                <div class="p-8 rounded-2xl bg-akDark border border-gray-800 hover:border-akRed/50 transition duration-300 group">
+                    <div class="w-16 h-16 bg-gray-800 rounded-xl flex items-center justify-center mb-6 group-hover:bg-akRed/20 transition">
+                        <i class="fa-solid fa-clipboard-check text-3xl text-akRed"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Usuwanie szkód</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Zgłoszenie szkody ma wpływ na jej dalszy sposób likwidacji. Proponujemy kompleksową likwidację: od zgłoszenia, przez przygotowanie samochodu zastępczego na etap naprawy, aż po odbiór w uzgodnionym terminie.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WARSZTAT -->
+    <section id="warsztat" class="py-20 bg-akDark border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white uppercase tracking-wider mb-4">Warsztat</h2>
+                <div class="h-1 w-20 bg-akRed mx-auto rounded"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Karta -->
+                <div class="p-8 rounded-2xl bg-akCard border border-gray-800 hover:border-akRed/50 transition duration-300 group text-center">
+                    <div class="w-16 h-16 bg-gray-800 rounded-xl mx-auto flex items-center justify-center mb-6 group-hover:bg-akRed/20 transition">
+                        <i class="fa-solid fa-hammer text-3xl text-akRed"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Blacharstwo</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Naprawy wykonywane z najwyższą starannością przez doświadczonych fachowców. Gwarantujemy, że po wypadku samochód zostanie odbudowany zgodnie z technologią naprawy, z zachowaniem geometrii.
+                    </p>
+                </div>
+                <!-- Karta -->
+                <div class="p-8 rounded-2xl bg-akCard border border-gray-800 hover:border-akRed/50 transition duration-300 group text-center">
+                    <div class="w-16 h-16 bg-gray-800 rounded-xl mx-auto flex items-center justify-center mb-6 group-hover:bg-akRed/20 transition">
+                        <i class="fa-solid fa-fill-drip text-3xl text-akRed"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Lakiernictwo</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        W naszym zakładzie wykonujemy kompleksowe i profesjonalne naprawy lakiernicze z dbałością o każdy najmniejszy detal powłoki lakierniczej.
+                    </p>
+                </div>
+                <!-- Karta -->
+                <div class="p-8 rounded-2xl bg-akCard border border-gray-800 hover:border-akRed/50 transition duration-300 group text-center">
+                    <div class="w-16 h-16 bg-gray-800 rounded-xl mx-auto flex items-center justify-center mb-6 group-hover:bg-akRed/20 transition">
+                        <i class="fa-solid fa-wrench text-3xl text-akRed"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Mechanika</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Klient zostawiający u nas samochód może liczyć na profesjonalną obsługę i fachowe porady. Wymienisz u nas oleje, filtry, opony, jak i elementy zawieszenia.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- O NAS & ZESPÓŁ -->
+    <section id="o-nas" class="py-20 bg-akCard border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white uppercase tracking-wider mb-4">O Nas</h2>
+                <div class="h-1 w-20 bg-akRed mx-auto rounded"></div>
+            </div>
+            
+            <div class="max-w-3xl mx-auto text-center text-gray-400 mb-20 space-y-4 leading-relaxed text-lg">
+                <p>Firma została założona w <strong class="text-white">1997r.</strong> Od samego początku umiejętności naszego zespołu zostały szybko docenione.</p>
+                <p>Najistotniejszą częścią naszej działalności jest powypadkowa naprawa samochodów z rozliczeniem bezgotówkowym z firmami ubezpieczeniowymi. Nasi pracownicy zajmują się zarówno formalnościami wynikającymi z konieczności rozliczenia kosztów naprawy, jak również samą naprawą.</p>
+                <p>Do Państwa dyspozycji posiadamy flotę samochodów zastępczych.</p>
+            </div>
+
+            <!-- Zespół (Team Cards) -->
+            <div class="text-center mb-10">
+                <h3 class="text-2xl font-bold text-white uppercase tracking-widest mb-8">Nasz Zespół</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-20">
+                <!-- Card 1 -->
+                <div class="bg-akDark p-8 rounded-2xl border border-gray-800 hover:border-akRed/50 transition duration-300 group text-center">
+                    <div class="w-16 h-16 bg-gray-800 rounded-full mx-auto flex items-center justify-center mb-4 group-hover:bg-akRed/20 transition">
+                        <i class="fa-solid fa-user-tie text-2xl text-akRed"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-1">Magdalena Dzierżęga</h4>
+                    <p class="text-xs uppercase tracking-widest text-akRed font-semibold mb-6">Sekretariat</p>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <p><i class="fa-solid fa-phone mr-2 text-gray-500"></i> 602 234 502</p>
+                        <p><i class="fa-solid fa-envelope mr-2 text-gray-500"></i> biuro@autokolor.info</p>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-akDark p-8 rounded-2xl border border-gray-800 hover:border-akRed/50 transition duration-300 group text-center">
+                    <div class="w-16 h-16 bg-gray-800 rounded-full mx-auto flex items-center justify-center mb-4 group-hover:bg-akRed/20 transition">
+                        <i class="fa-solid fa-user-shield text-2xl text-akRed"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-1">Katarzyna Sitek</h4>
+                    <p class="text-xs uppercase tracking-widest text-akRed font-semibold mb-6">Specjalista ds. ubezpieczeń</p>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <p><i class="fa-solid fa-phone mr-2 text-gray-500"></i> 794 381 210</p>
+                        <p><i class="fa-solid fa-envelope mr-2 text-gray-500"></i> biuro@sitek.info</p>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-akDark p-8 rounded-2xl border border-gray-800 hover:border-akRed/50 transition duration-300 group text-center">
+                    <div class="w-16 h-16 bg-gray-800 rounded-full mx-auto flex items-center justify-center mb-4 group-hover:bg-akRed/20 transition">
+                        <i class="fa-solid fa-user-check text-2xl text-akRed"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-1">Adrian Grzegorzek</h4>
+                    <p class="text-xs uppercase tracking-widest text-akRed font-semibold mb-6">Specjalista ds. likwidacji szkód</p>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <p><i class="fa-solid fa-phone mr-2 text-gray-500"></i> 508 109 861</p>
+                        <p><i class="fa-solid fa-envelope mr-2 text-gray-500"></i> biuro@autokolor.info</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Partnerzy -->
+            <div class="border-t border-gray-800 pt-16 max-w-5xl mx-auto">
+                <h3 class="text-xl font-bold text-center text-gray-500 uppercase tracking-widest mb-8">Nasi Partnerzy</h3>
+                <div class="flex flex-wrap justify-center items-center gap-12 text-gray-400 opacity-60">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-shield-halved text-4xl"></i>
+                        <span class="font-black text-xl uppercase tracking-tighter">Comistal</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-gem text-4xl"></i>
+                        <span class="font-light text-xl uppercase tracking-widest">Cosmetics<strong class="font-bold">Group</strong></span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-certificate text-4xl"></i>
+                        <span class="font-bold text-2xl tracking-wide">MATTES</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KONTAKT -->
+    <section id="kontakt" class="py-20 bg-akDark border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row gap-12 max-w-6xl mx-auto">
+                
+                <!-- Informacje Kontaktowe -->
+                <div class="lg:w-1/3">
+                    <h2 class="text-3xl font-bold text-white uppercase tracking-wider mb-4">Kontakt</h2>
+                    <div class="h-1 w-20 bg-akRed rounded mb-8"></div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4 group">
+                            <div class="bg-gray-800 p-3 rounded-lg group-hover:bg-akRed/20 transition">
+                                <i class="fa-solid fa-map-location-dot text-xl text-akRed"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1 uppercase tracking-wide text-sm">Adres</h4>
+                                <p class="text-gray-400 text-sm">ul. Rymera 119<br>44-310 Radlin</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 group">
+                            <div class="bg-gray-800 p-3 rounded-lg group-hover:bg-akRed/20 transition">
+                                <i class="fa-solid fa-phone text-xl text-akRed"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1 uppercase tracking-wide text-sm">Telefon</h4>
+                                <p class="text-gray-400 text-sm"><a href="tel:324570375" class="hover:text-akRed transition">32 457 03 75</a></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 group">
+                            <div class="bg-gray-800 p-3 rounded-lg group-hover:bg-akRed/20 transition">
+                                <i class="fa-solid fa-envelope text-xl text-akRed"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1 uppercase tracking-wide text-sm">E-mail</h4>
+                                <p class="text-gray-400 text-sm"><a href="mailto:biuro@autokolor.info" class="hover:text-akRed transition">biuro@autokolor.info</a></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 group">
+                            <div class="bg-gray-800 p-3 rounded-lg group-hover:bg-akRed/20 transition">
+                                <i class="fa-solid fa-clock text-xl text-akRed"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1 uppercase tracking-wide text-sm">Godziny otwarcia</h4>
+                                <p class="text-gray-400 text-sm">Poniedziałek - Piątek: 08:00 - 16:00<br>Sobota: 08:00 - 12:00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formularz Kontaktowy -->
+                <div class="lg:w-2/3 bg-akDark p-8 rounded-2xl border border-gray-800 shadow-xl">
+                    <h3 class="text-2xl font-bold text-white mb-2">Napisz do nas!</h3>
+                    <p class="text-sm text-gray-400 mb-8">Jeśli masz jakiekolwiek pytania, wątpliwości czy inne uwagi wypełnij formularz kontaktowy. Dziękujemy!</p>
+                    
+                    <form id="contact-form" action="https://formspree.io/f/xkjjjpne" method="POST" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- Pola formularza wraz z wymaganymi atrybutami name -->
+                            <input type="text" name="imie" placeholder="Imię" required class="w-full bg-transparent border border-gray-700 rounded p-3 text-white focus:outline-none focus:border-akRed text-sm">
+                            <input type="email" name="email" placeholder="E-mail" required class="w-full bg-transparent border border-gray-700 rounded p-3 text-white focus:outline-none focus:border-akRed text-sm">
+                            <input type="tel" name="telefon" placeholder="Telefon" class="w-full bg-transparent border border-gray-700 rounded p-3 text-white focus:outline-none focus:border-akRed text-sm">
+                        </div>
+                        <textarea name="wiadomosc" placeholder="Wiadomość" rows="5" required class="w-full bg-transparent border border-gray-700 rounded p-3 text-white focus:outline-none focus:border-akRed text-sm"></textarea>
+                        
+                        <button type="submit" class="bg-transparent border border-gray-600 text-gray-300 font-bold py-2 px-6 rounded hover:border-akRed hover:text-akRed transition text-sm">Wyślij</button>
+                    </form>
+
+                    <!-- Komunikat o pomyślnym wysłaniu wiadomości (Z PHP) -->
+                    <div id="form-success" class="hidden mt-4 p-4 bg-green-900 border border-green-700 text-green-200 rounded text-sm fade-in">
+                        <i class="fas fa-check-circle mr-2"></i> Twoja wiadomość została pomyślnie wysłana! Skontaktujemy się z Tobą najszybciej jak to możliwe.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black py-8 border-t border-gray-900">
+        <div class="container mx-auto px-4 flex justify-center items-center text-xs text-gray-500">
+            <div class="text-center">
+                <p>COPYRIGHT &copy; 2015-2026 AUTO KOLOR</p>
+                <p class="mt-1 text-gray-600">Dziękujemy za odwiedziny! Wszelkie prawa zastrzeżone.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL POMOC DROGOWA -->
+    <div id="pomoc-modal" class="fixed inset-0 z-[100] flex items-center justify-center hidden">
+        <!-- Backdrop (ciemne tło) -->
+        <div id="pomoc-modal-backdrop" class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity cursor-pointer"></div>
+        
+        <!-- Zawartość Modala -->
+        <div class="relative bg-akCard border border-gray-800 p-8 rounded-2xl shadow-2xl max-w-sm w-full mx-4 z-10 fade-in text-center">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+            
+            <div class="w-16 h-16 bg-akRed/20 rounded-full mx-auto flex items-center justify-center mb-4">
+                <i class="fa-solid fa-truck-pickup text-3xl text-akRed"></i>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-white mb-2 uppercase">Pomoc Drogowa</h3>
+            <p class="text-gray-400 text-sm mb-6">Jesteśmy do Twojej dyspozycji 24h na dobę. Zadzwoń po natychmiastową pomoc:</p>
+            
+            <!-- Link do dzwonienia, bardzo duży i czytelny dla użytkowników mobilnych -->
+            <a href="tel:324570375" class="block w-full py-4 bg-akRed text-white font-bold text-xl rounded-xl hover:bg-akRedHover transition shadow-lg shadow-akRed/30 mb-2">
+                <i class="fa-solid fa-phone mr-2 animate-pulse"></i> 32 457 03 75
+            </a>
+            <p class="text-xs text-gray-500">Kliknij w przycisk na telefonie, aby zadzwonić.</p>
+        </div>
+    </div>
+
+    <!-- LOGIKA JAVASCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Obsługa mobilnego menu nawigacyjnego
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                
+                // Zmiana ikony hamburgera na "X" lub odwrotnie
+                const icon = menuBtn.querySelector('i');
+                if (mobileMenu.classList.contains('hidden')) {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                } else {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                }
+            });
+
+            // Zamykanie mobilnego menu po kliknięciu w dowolny link
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    const icon = menuBtn.querySelector('i');
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                });
+            });
+
+            // Obsługa formularza kontaktowego przez Formspree (AJAX)
+            const contactForm = document.getElementById('contact-form');
+            const formSuccess = document.getElementById('form-success');
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', async function(e) {
+                    e.preventDefault(); // Zatrzymuje standardowe przeładowanie strony
+                    
+                    const data = new FormData(contactForm);
+                    
+                    try {
+                        const response = await fetch(contactForm.action, {
+                            method: 'POST',
+                            body: data,
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            // Sukces - czyszczenie formularza i pokazanie komunikatu
+                            contactForm.reset();
+                            formSuccess.classList.remove('hidden');
+                            
+                            setTimeout(() => {
+                                formSuccess.classList.add('hidden');
+                            }, 5000);
+                        } else {
+                            alert("Wystąpił błąd podczas wysyłania wiadomości.");
+                        }
+                    } catch (error) {
+                        alert("Wystąpił błąd sieci. Spróbuj ponownie później.");
+                    }
+                });
+            }
+
+            // Obsługa wyskakującego okienka (Modal) "Pomoc Drogowa"
+            const modal = document.getElementById('pomoc-modal');
+            const heroBtn = document.getElementById('hero-pomoc-btn');
+            const closeBtn = document.getElementById('close-modal-btn');
+            const backdrop = document.getElementById('pomoc-modal-backdrop');
+
+            // Funkcja otwierająca okienko
+            function openModal() {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Zapobieganie przewijaniu strony pod okienkiem
+            }
+
+            // Funkcja zamykająca okienko
+            function closeModal() {
+                modal.classList.add('hidden');
+                document.body.style.overflow = ''; // Przywrócenie możliwości przewijania
+            }
+
+            // Przypisanie zdarzeń do przycisków
+            heroBtn.addEventListener('click', openModal);
+            closeBtn.addEventListener('click', closeModal);
+            backdrop.addEventListener('click', closeModal); // Zamknięcie po kliknięciu w ciemne tło
+            
+            // Zamknięcie okienka za pomocą klawisza ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
